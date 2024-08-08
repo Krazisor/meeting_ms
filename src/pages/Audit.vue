@@ -31,10 +31,12 @@
             <el-table-column fixed="right" label="操作" min-width="120">
 
                 <template #default="row">
-                    <el-button link type="primary" size="default" plain @click="passRequestButton(row)">
+                    <el-button link type="primary" size="default" plain @click="passRequestButton(row)"
+                        :disabled="row.row.approval === 0 ?false :true">
                         通过
                     </el-button>
-                    <el-button link type="danger" size="default" plain @click="refuseRequestButton(row)">
+                    <el-button link type="danger" size="default" plain @click="refuseRequestButton(row)"
+                        :disabled="row.row.approval === 0 ? false : true">
                         驳回
                     </el-button>
                 </template>
@@ -190,7 +192,7 @@ const passRequestButton = async (row: any) => {
         ElMessage.success("审批成功")
         handleCurrentChange()
     } else {
-        ElMessage.error("异常错误,请联系管理员")
+        ElMessage.error("该时间段可能已有会议占用此会议室")
     }
 }
 
