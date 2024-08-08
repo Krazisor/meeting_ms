@@ -185,9 +185,10 @@ const passRequestButton = async (row: any) => {
         approveId: ref(parseInt(tokenStore.userId)),
         approval: ref(1)
     })
-    let res = auditMeetingById(auditParams)
+    let res = auditMeetingById(auditParams.value)
     if ((await res).data.code === 1) {
         ElMessage.success("审批成功")
+        handleCurrentChange()
     } else {
         ElMessage.error("异常错误,请联系管理员")
     }
@@ -201,9 +202,10 @@ const refuseRequestButton = async (row: any) => {
         approveId: ref(parseInt(tokenStore.userId)),
         approval: ref(2)
     })
-    let res = auditMeetingById(auditParams)
+    let res = auditMeetingById(auditParams.value)
     if ((await res).data.code === 1) {
         ElMessage.success("审批成功")
+        handleCurrentChange()
     } else {
         ElMessage.error("异常错误,请联系管理员")
     }
