@@ -17,12 +17,11 @@ export const getRequestByParamsAndPage = (selectData: any) => {
             userId: selectData.userId,
             rentalId: selectData.rentalId,
             meetingroomId: selectData.meetingroomId,
-            meetingroomRentaldate: selectData.meetingroomRentaldate,
+            meetingroomRentaldateTemp: selectData.meetingroomRentaldateTemp,
             meetingroomRentaltime: selectData.meetingroomRentaltime,
             approval: selectData.approval
         }
     };
-    // console.log("@@@@",selectData.approval)
     const url = 'http://localhost:8080/request/requestInfoMore'
     return request.get(url, config);
 }

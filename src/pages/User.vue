@@ -1,10 +1,15 @@
 <template>
 	<div class="userSelect">
-
+		<div class="title"
+			style="margin-left: 10px;margin-top: 20px;font-weight: bold;font-size: 40px;color: #2c5d9d;text-align: left">
+			用户列表
+		</div>
 		<!-- 筛选框 -->
 		<div class="mb-4" style="text-align: right;margin-right: 3%;margin-bottom: 10px;margin-top: 10px;">
-			<el-button type="primary" :icon="Search" @click="selectInfo" class="blue-button">查询用户</el-button>
-			<el-button type="success" :icon="Upload" @click="addInfo" class="gradient-button">新增用户</el-button>
+			<el-button type="primary" :icon="Search" @click="selectInfo" class="blue-button"
+				style="font-weight: bold">查询用户</el-button>
+			<el-button type="success" :icon="Upload" @click="addInfo" class="gradient-button"
+				style="font-weight: bold">新增用户</el-button>
 		</div>
 
 		<!-- 内容展示 -->
@@ -20,10 +25,12 @@
 			<el-table-column fixed="right" label="操作" min-width="120">
 
 				<template #default="row">
-					<el-button link type="primary" size="default" plain @click="getInfoNew(row)">
+					<el-button link type="primary" size="default" plain @click="getInfoNew(row)"
+						style="font-weight: bold">
 						修改
 					</el-button>
-					<el-button link type="danger" size="default" plain @click="deleteButton(row)">
+					<el-button link type="danger" size="default" plain @click="deleteButton(row)"
+						style="font-weight: bold">
 						删除
 					</el-button>
 				</template>
@@ -34,7 +41,7 @@
 		<!-- 分页 -->
 		<el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[5, 10, 20, 40]"
 			background layout="sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
-			@current-change="handleCurrentChange" :total="total" />
+			@current-change="handleCurrentChange" :total="total" style="font-weight: bold"/>
 	</div>
 
 	<!-- 删除确认框 -->
@@ -43,10 +50,10 @@
 			<span>你确定要删除 ID:{{ rowNow.userId }} 的相关信息吗?</span>
 			<template #footer>
 				<div class="dialog-footer">
-					<el-button @click="centerDialogVisible = false">
+					<el-button @click="centerDialogVisible = false" style="font-weight: bold">
 						取消
 					</el-button>
-					<el-button type="primary" @click="deleteInfo()">
+					<el-button type="primary" @click="deleteInfo()" style="font-weight: bold">
 						确定
 					</el-button>
 				</div>
@@ -55,7 +62,7 @@
 	</div>
 
 	<!-- 查询弹出框(已完善) -->
-	<el-dialog v-model="dialogFormVisible" title="查询用户(可选)" width="400" align-center>
+	<el-dialog v-model="dialogFormVisible" title="查询用户(可选)" width="400" align-center style="font-weight: bold">
 		<el-form width="">
 			<el-form-item label="用户ID" :label-width="formLabelWidth">
 				<el-input v-model="userId" autocomplete="off" placeholder="请输入用户ID" clearable />
@@ -76,9 +83,9 @@
 		</el-form>
 		<template #footer>
 			<div class="dialog-footer">
-				<el-button @click="dialogFormVisible = false">取消</el-button>
-				<el-button type="danger" @click="formSelectDamage">清空</el-button>
-				<el-button type="primary" @click="formSelectChange">
+				<el-button @click="dialogFormVisible = false" style="font-weight: bold">取消</el-button>
+				<el-button type="danger" @click="formSelectDamage" style="font-weight: bold">清空</el-button>
+				<el-button type="primary" @click="formSelectChange" style="font-weight: bold">
 					查询
 				</el-button>
 			</div>
@@ -86,7 +93,7 @@
 	</el-dialog>
 
 	<!-- 新增用户弹出框(已完善) -->
-	<el-dialog v-model="addForm" title="新增用户" width="400" align-center>
+	<el-dialog v-model="addForm" title="新增用户" width="400" align-center style="font-weight: bold">
 		<el-form width="">
 			<el-form-item label="用户ID" :label-width="formLabelWidth">
 				<el-input v-model="registerForm.userId" autocomplete="off" placeholder="请输入用户ID" clearable />
@@ -113,8 +120,8 @@
 		</el-form>
 		<template #footer>
 			<div class="dialog-footer">
-				<el-button @click="formAddDamage">取消</el-button>
-				<el-button type="primary" @click="formAddChange">
+				<el-button @click="formAddDamage" style="font-weight: bold">取消</el-button>
+				<el-button type="primary" @click="formAddChange" style="font-weight: bold">
 					注册
 				</el-button>
 			</div>
@@ -122,7 +129,7 @@
 	</el-dialog>
 
 	<!-- 用户修改操作弹出框 -->
-	<el-dialog v-model="changeDialog" title="修改用户信息" width="1000" align-center>
+	<el-dialog v-model="changeDialog" title="修改用户信息" width="1000" align-center style="font-weight: bold">
 		<span>
 			<el-descriptions class="margin-top" :column="3" border>
 				<el-descriptions-item>
@@ -214,8 +221,8 @@
 		</span>
 		<template #footer>
 			<div class="dialog-footer">
-				<el-button @click="changeInfoDamage">取消</el-button>
-				<el-button type="primary" @click="changeInfo">
+				<el-button @click="changeInfoDamage" style="font-weight: bold">取消</el-button>
+				<el-button type="primary" @click="changeInfo" style="font-weight: bold">
 					确定
 				</el-button>
 			</div>

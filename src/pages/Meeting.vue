@@ -1,9 +1,15 @@
 <template>
 	<div class="meeting">
+		<div class="title"
+			style="margin-left: 10px;margin-top: 20px;font-weight: bold;font-size: 40px;color: #2c5d9d;text-align: left">
+			会议室列表
+		</div>
 		<!-- 筛选框 -->
 		<div class="mb-4" style="text-align: right;margin-right: 3%;margin-bottom: 10px;margin-top: 10px;">
-			<el-button type="primary" :icon="Search" @click="selectInfo" class="blue-button">查询会议室</el-button>
-			<el-button type="success" :icon="Upload" @click="addInfo" class="gradient-button">新增会议室</el-button>
+			<el-button type="primary" :icon="Search" @click="selectInfo" class="blue-button"
+				style="font-weight: bold">查询会议室</el-button>
+			<el-button type="success" :icon="Upload" @click="addInfo" class="gradient-button"
+				style="font-weight: bold">新增会议室</el-button>
 		</div>
 
 		<!-- 内容展示 -->
@@ -14,10 +20,11 @@
 			<el-table-column fixed="right" label="操作" min-width="120">
 
 				<template #default="row">
-					<el-button link type="primary" size="default" plain @click="getInfo(row)">
+					<el-button link type="primary" size="default" plain @click="getInfo(row)" style="font-weight: bold">
 						修改
 					</el-button>
-					<el-button link type="danger" size="default" plain @click="deleteButton(row)">
+					<el-button link type="danger" size="default" plain @click="deleteButton(row)"
+						style="font-weight: bold">
 						删除
 					</el-button>
 				</template>
@@ -28,11 +35,11 @@
 		<!-- 分页 -->
 		<el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[5, 10, 20, 40]"
 			background layout="sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
-			@current-change="handleCurrentChange" :total="total" />
+			@current-change="handleCurrentChange" :total="total" style="font-weight: bold" />
 	</div>
 
 	<!-- 查询会议室的弹出框 -->
-	<el-dialog v-model="dialogFormVisible" title="查询会议室(可选)" width="400" align-center>
+	<el-dialog v-model="dialogFormVisible" title="查询会议室(可选)" width="400" align-center style="font-weight: bold">
 		<el-form width="">
 			<el-form-item label="会议室房间号" label-width="100px">
 				<el-input v-model="meetingroomId" autocomplete="off" placeholder="请输入会议室房间号" clearable />
@@ -46,9 +53,9 @@
 		</el-form>
 		<template #footer>
 			<div class="dialog-footer">
-				<el-button @click="dialogFormVisible = false">取消</el-button>
-				<el-button type="danger" @click="cleanParams">清空</el-button>
-				<el-button type="primary" @click="formSelectChange">
+				<el-button @click="dialogFormVisible = false" style="font-weight: bold">取消</el-button>
+				<el-button type="danger" @click="cleanParams" style="font-weight: bold">清空</el-button>
+				<el-button type="primary" @click="formSelectChange" style="font-weight: bold">
 					查询
 				</el-button>
 			</div>
@@ -56,7 +63,7 @@
 	</el-dialog>
 
 	<!-- 新增会议室的弹出框 -->
-	<el-dialog v-model="addForm" title="新增会议室" width="400" align-center>
+	<el-dialog v-model="addForm" title="新增会议室" width="400" align-center style="font-weight: bold">
 		<el-form width="">
 			<el-form-item label="会议室房间号" label-width="100px">
 				<el-input v-model="registerForm.meetingroomId" autocomplete="off" placeholder="请输入会议室房间号" clearable />
@@ -71,8 +78,8 @@
 		</el-form>
 		<template #footer>
 			<div class="dialog-footer">
-				<el-button @click="formAddDamage">取消</el-button>
-				<el-button type="primary" @click="formAddChange">
+				<el-button @click="formAddDamage" style="font-weight: bold">取消</el-button>
+				<el-button type="primary" @click="formAddChange" style="font-weight: bold">
 					新增
 				</el-button>
 			</div>
@@ -81,14 +88,14 @@
 
 	<!-- 删除确认框 -->
 	<div>
-		<el-dialog v-model="centerDialogVisible" title="Warning" width="500" align-center>
+		<el-dialog v-model="centerDialogVisible" title="Warning" width="500" align-center style="font-weight: bold">
 			<span>你确定要删除 房间号:{{ meetingroomId }} 的相关信息吗?</span>
 			<template #footer>
 				<div class="dialog-footer">
-					<el-button @click="deleteInfoDamage">
+					<el-button @click="deleteInfoDamage" style="font-weight: bold">
 						取消
 					</el-button>
-					<el-button type="primary" @click="deleteInfo()">
+					<el-button type="primary" @click="deleteInfo()" style="font-weight: bold">
 						确定
 					</el-button>
 				</div>
@@ -97,7 +104,7 @@
 	</div>
 
 	<!-- 会议室修改界面弹出框 -->
-	<el-dialog v-model="changeDialog" title="修改会议室信息" width="600" align-center>
+	<el-dialog v-model="changeDialog" title="修改会议室信息" width="600" align-center style="font-weight: bold">
 		<span>
 			<el-descriptions class="margin-top" :column="2" border>
 				<el-descriptions-item>
@@ -148,8 +155,8 @@
 		</span>
 		<template #footer>
 			<div class="dialog-footer">
-				<el-button @click="changeInfoDamage">取消</el-button>
-				<el-button type="primary" @click="changeInfo">
+				<el-button @click="changeInfoDamage" style="font-weight: bold">取消</el-button>
+				<el-button type="primary" @click="changeInfo" style="font-weight: bold">
 					确定
 				</el-button>
 			</div>

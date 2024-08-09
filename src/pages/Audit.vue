@@ -1,12 +1,16 @@
 <template>
     <div class="audit">
+        <div class="title"
+            style="margin-left: 10px;margin-top: 20px;font-weight: bold;font-size: 40px;color: #2c5d9d;text-align: left">
+            会议审核
+        </div>
         <!-- 筛选框 -->
-        <div class="mb-4" style="text-align: right;margin-right: 3%;margin-bottom: 10px;margin-top: 10px; ">
-            <el-button type="primary" :icon="Search" @click="selectInfo" style="margin-right: 20px"
+        <div class="mb-4" style="text-align: right;margin-right: 3%;margin-bottom: 10px;margin-top: 10px">
+            <el-button type=" primary" :icon="Search" @click="selectInfo" style="margin-right: 20px;font-weight:bold"
                 class="gradient-button">会议请求筛选</el-button>
 
-            <el-select v-model="value" placeholder="选择审批状态" style="width: 160px" clearable @change="selectChange()"
-                class="custom-select">
+            <el-select v-model="value" placeholder="选择审批状态" style="width: 160px;font-weight: bold" clearable
+                @change="selectChange()" class="custom-select">
                 <el-option v-for="item in options" :key="item.value" :value="item.value">
                     <div class="option-label">
                         <el-icon style="margin-right: 10px;">
@@ -31,12 +35,12 @@
             <el-table-column fixed="right" label="操作" min-width="120">
 
                 <template #default="row">
-                    <el-button link type="primary" size="default" plain @click="passRequestButton(row)"
-                        :disabled="row.row.approval === 0 ?false :true">
+                    <el-button type="primary" size="small" plain @click="passRequestButton(row)"
+                        :disabled="row.row.approval === 0 ?false :true" style="font-weight: bold">
                         通过
                     </el-button>
-                    <el-button link type="danger" size="default" plain @click="refuseRequestButton(row)"
-                        :disabled="row.row.approval === 0 ? false : true">
+                    <el-button type="danger" size="small" plain @click="refuseRequestButton(row)"
+                        :disabled="row.row.approval === 0 ? false : true" style="font-weight: bold">
                         驳回
                     </el-button>
                 </template>
@@ -47,33 +51,44 @@
         <!-- 分页 -->
         <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[5, 10, 20, 40]"
             background layout="sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
-            @current-change="handleCurrentChange" :total="total" />
+            @current-change="handleCurrentChange" :total="total" style="font-weight: bold" />
     </div>
 
     <!-- 会议请求的弹出框 -->
-    <el-dialog v-model="dialogFormVisible" title="会议请求筛选(可选)" width="400" align-center>
+    <el-dialog v-model="dialogFormVisible" title="会议请求筛选(可选)" width="400" align-center style="font-weight: bold">
         <el-form width="">
             <el-form-item label="请求ID" label-width="100px">
-                <el-input v-model="rentalId" autocomplete="off" placeholder="请输入会议室房间号" clearable />
+                <el-input v-model="rentalId" autocomplete="off" placeholder="请输入请求ID" clearable />
             </el-form-item>
             <el-form-item label="请求用户ID" label-width="100px">
-                <el-input v-model="userId" autocomplete="off" placeholder="请输入会议室规模" clearable />
+                <el-input v-model="userId" autocomplete="off" placeholder="请输入用户ID" clearable />
             </el-form-item>
             <el-form-item label="请求房间号" label-width="100px">
-                <el-input v-model="meetingroomId" autocomplete="off" placeholder="请输入负责人" clearable />
+                <el-input v-model="meetingroomId" autocomplete="off" placeholder="请输入房间号" clearable />
             </el-form-item>
             <el-form-item label="请求日期" label-width="100px">
-                <el-input v-model="meetingroomRentaldate" autocomplete="off" placeholder="请输入负责人" clearable />
+                <el-date-picker v-model="meetingroomRentaldateTemp" type="date" placeholder="请选择请求日期" clearable style="width: 300px"
+                 format="YYYY/MM/DD" value-format="YYYY-MM-DD" />
             </el-form-item>
             <el-form-item label="请求时间" label-width="100px">
-                <el-input v-model="meetingroomRentaltime" autocomplete="off" placeholder="请输入负责人" clearable />
+                <el-select v-model="value2" placeholder="请选择请求时间" style="width: 300px" clearable
+                    @change="selectChange2()">
+                    <el-option v-for="item in options2" :key="item.value" :value="item.value">
+                        <div class="option-label">
+                            <el-icon style="margin-right: 10px;">
+                                <component :is="item.icon" />
+                            </el-icon>
+                            {{ item.label }}
+                        </div>
+                    </el-option>
+                </el-select>
             </el-form-item>
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="danger" @click="cleanParams">清空</el-button>
-                <el-button type="primary" @click="formSelectChange">
+                <el-button @click="dialogFormVisible = false" style="font-weight: bold">取消</el-button>
+                <el-button type="danger" @click="cleanParams" style="font-weight: bold">清空</el-button>
+                <el-button type="primary" @click="formSelectChange" style="font-weight: bold">
                     查询
                 </el-button>
             </div>
@@ -85,6 +100,7 @@
 
 <script setup lang = "ts" name = "Audit">
 import { onBeforeMount, ref } from 'vue';
+import {  Upload, Clock } from '@element-plus/icons-vue'
 
 // 预定时间规范化
 const timeFormatter = function (row: any, column: any, cellValue: any, index: any) {
@@ -117,6 +133,63 @@ const approvalFormatter = function (row: any, column: any, cellValue: any, index
     }
     if (cellValue === 2) {
         return "已驳回"
+    }
+}
+// 查询会议中的的options时间选择
+// 选择栏
+const value2 = ref('')
+const options2 = [
+    {
+        value: '09:00-10:00',
+        label: '09:00-10:00',
+        icon: Clock
+    },
+    {
+        value: '10:00-11:00',
+        label: '10:00-11:00',
+        icon: Clock
+    },
+    {
+        value: '11:00-12:00',
+        label: '11:00-12:00',
+        icon: Clock
+    },
+    {
+        value: '13:00-14:00',
+        label: '13:00-14:00',
+        icon: Clock
+    },
+    {
+        value: '14:00-15:00',
+        label: '14:00-15:00',
+        icon: Clock
+    },
+    {
+        value: '15:00-16:00',
+        label: '15:00-16:00',
+        icon: Clock
+    },
+]
+// 选择栏发生变化时的绑定事件
+const selectChange2 = async () => {
+    // 变量监听，让approval和value的值进行绑定
+    if (value2.value == "09:00-10:00") {
+        meetingroomRentaltime.value = 0
+    }
+    else if (value2.value == "10:00-11:00") {
+        meetingroomRentaltime.value = 1
+    }
+    else if (value2.value == "11:00-12:00") {
+        meetingroomRentaltime.value = 2
+    }
+    else if (value2.value == "13:00-14:00") {
+        meetingroomRentaltime.value = 3
+    }
+    else if (value2.value == "14:00-15:00") {
+        meetingroomRentaltime.value = 4
+    }
+    else if (value2.value == "15:00-16:00") {
+        meetingroomRentaltime.value = 5
     }
 }
 
@@ -222,7 +295,7 @@ let total = ref()
 let userId = ref()
 let rentalId = ref()
 let meetingroomId = ref()
-let meetingroomRentaldate = ref<Date>()
+let meetingroomRentaldateTemp = ref<String>()
 let meetingroomRentaltime = ref()
 let approval = ref()
 // 清空大法，除了approval
@@ -230,13 +303,14 @@ const cleanParams = () => {
     userId.value = undefined
     rentalId.value = undefined
     meetingroomId.value = undefined
-    meetingroomRentaldate.value = undefined
+    meetingroomRentaldateTemp.value = undefined
     meetingroomRentaltime.value = undefined
+    value2.value = ''
 }
 
 import { getRequestByParamsAndPage } from '@/api/audit';
 import { Search, SuccessFilled, CircleCloseFilled, Promotion } from '@element-plus/icons-vue'
-import { ElMessage, ElNotification } from 'element-plus';
+import { ElMessage } from 'element-plus';
 
 const requestList = async () => {
     let params = {
@@ -245,10 +319,11 @@ const requestList = async () => {
         userId: userId.value ? userId.value : null,
         rentalId: rentalId.value ? rentalId.value : null,
         meetingroomId: meetingroomId.value ? meetingroomId.value : null,
-        meetingroomRentaldate: meetingroomRentaldate.value ? meetingroomRentaldate.value : null,
-        meetingroomRentaltime: meetingroomRentaltime.value ? meetingroomRentaltime.value : null,
+        meetingroomRentaldateTemp: meetingroomRentaldateTemp.value ? meetingroomRentaldateTemp.value : null,
+        meetingroomRentaltime: meetingroomRentaltime.value,
         approval: approval.value
     }
+    console.log(meetingroomRentaldateTemp.value)
     let result = await getRequestByParamsAndPage(params)
     total = result.data.data.total
     return result
@@ -309,5 +384,40 @@ onBeforeMount(async () => {
     /* 边框颜色 */
     border-radius: 5px;
     /* 圆角 */
+}
+.gradient-button {
+    background: linear-gradient(270deg, #4caf50, #cad441);
+    /* 绿色渐变 */
+    border: none;
+    /* 去掉默认边框 */
+    color: white;
+    /* 文字颜色 */
+    transition: background 0.3s, transform 0.3s;
+    /* 动画过渡效果 */
+}
+
+.gradient-button:hover {
+    background: linear-gradient(270deg, #cad441, #4caf50);
+    /* 悬停时的渐变效果 */
+    transform: scale(1.05);
+    /* 悬停时放大效果 */
+}
+
+.blue-button {
+    background: linear-gradient(270deg, #00bfff, #2c5d9d);
+    /* 天蓝色渐变 */
+    border: none;
+    /* 去掉默认边框 */
+    color: white;
+    /* 文字颜色 */
+    transition: background 0.3s, transform 0.3s;
+    /* 动画过渡效果 */
+}
+
+.blue-button:hover {
+    background: linear-gradient(270deg, #2c5d9d, #00bfff);
+    /* 悬停时的渐变效果 */
+    transform: scale(1.05);
+    /* 悬停时放大效果 */
 }
 </style>

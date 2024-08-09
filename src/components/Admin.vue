@@ -64,7 +64,7 @@
                                         <el-menu-item index="2-2">会议审核</el-menu-item>
                                     </RouterLink>
                                     <RouterLink to="/auditManage" :style="{ textDecoration: 'none' }">
-                                        <el-menu-item index="2-3">已通过会议管理</el-menu-item>
+                                        <el-menu-item index="2-3">会议管理</el-menu-item>
                                     </RouterLink>
                                     <el-menu-item index="2-4">会议总览</el-menu-item>
                                 </el-menu-item-group>
