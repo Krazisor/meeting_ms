@@ -49,14 +49,14 @@
 				<el-input v-model="meetingroomId" autocomplete="off" placeholder="请输入会议室ID" clearable />
 			</el-form-item>
 			<el-form-item label="会议日期" :label-width="formLabelWidth">
-				<el-date-picker v-model="meetingroomRentaldateTemp" type="date" placeholder="请选择会议日期" clearable style="width: 300px"
-				format="YYYY/MM/DD" value-format="YYYY-MM-DD" />
+				<el-date-picker v-model="meetingroomRentaldateTemp" type="date" placeholder="请选择会议日期" clearable
+					style="width: 300px" format="YYYY/MM/DD" value-format="YYYY-MM-DD" />
 			</el-form-item>
 
 			<el-form-item label="会议时间" :label-width="formLabelWidth">
 				<el-select v-model="value" placeholder="请选择会议时间" style="width: 300px" clearable
 					@change="selectChange()">
-					<el-option v-for="item in options" :key="item.value" :value="item.value">
+					<el-option v-for="item in options2" :key="item.value" :value="item.value">
 						<div class="option-label">
 							<el-icon style="margin-right: 10px;">
 								<component :is="item.icon" />
@@ -85,7 +85,79 @@
 			</div>
 		</template>
 	</el-dialog>
+
+	<!-- 新增会议的弹出框 -->
+	<el-dialog v-model="addForm" title="新增会议" width="400" align-center style="font-weight: bold">
+		<el-form width="">
+			<el-form-item label="请求房间号" label-width="100px">
+				<el-input v-model="registerForm.meetingroomId" autocomplete="off" placeholder="请输入会议室房间号" clearable />
+			</el-form-item>
+			<el-form-item label="会议日期" label-width="100px">
+				<el-date-picker v-model="registerForm.meetingroomRentaldate" type="date" placeholder="请选择会议日期" clearable
+					style="width: 300px" format="YYYY/MM/DD" value-format="YYYY-MM-DD" />
+			</el-form-item>
+
+			<el-form-item label="会议时间" label-width="100px">
+				<el-select v-model="value2" placeholder="请选择会议时间" style="width: 300px" clearable
+					@change="selectChange2()">
+					<el-option v-for="item2 in options2" :key="item2.value" :value="item2.value">
+						<div class="option-label">
+							<el-icon style="margin-right: 10px;">
+								<component :is="item2.icon" />
+							</el-icon>
+							{{ item2.label }}
+						</div>
+					</el-option>
+				</el-select>
+			</el-form-item>
+
+			<el-form-item label="详细描述" label-width="100px">
+				<el-input type="textarea" v-model="registerForm.rentalDescribe" autocomplete="off"
+					placeholder="请输入会议室规模" clearable autosize />
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<div class="dialog-footer">
+				<el-button @click="formAddDamage" style="font-weight: bold">取消</el-button>
+				<el-button type="primary" @click="formAddChange" style="font-weight: bold">
+					新增
+				</el-button>
+			</div>
+		</template>
+	</el-dialog>
+
+	<!-- 撤销确认框 -->
+	<el-dialog v-model="centerDialogVisible" title="Warning" width="500" align-center>
+		<span>你确定要撤销 房间号:{{ rowNow.meetingroomId }} 此时间段的会议信息吗?</span>
+		<template #footer>
+			<div class="dialog-footer">
+				<el-button @click="centerDialogVisible = false" style="font-weight: bold">
+					取消
+				</el-button>
+				<el-button type="primary" @click="regretInfo()" style="font-weight: bold">
+					确定
+				</el-button>
+			</div>
+		</template>
+	</el-dialog>
+
+	<!-- 删除确认框 -->
+	<el-dialog v-model="deleteVisible" title="Warning" width="500" align-center>
+		<span>你确定要删除 房间号:{{ rowNow.meetingroomId }} 此时间段的会议信息吗?  删除后不可恢复！</span>
+		<template #footer>
+			<div class="dialog-footer">
+				<el-button @click="deleteVisible = false" style="font-weight: bold">
+					取消
+				</el-button>
+				<el-button type="primary" @click="deleteInfo()" style="font-weight: bold">
+					确定
+				</el-button>
+			</div>
+		</template>
+	</el-dialog>
 </template>
+
+
 
 <script setup lang="ts" name="AuditManage">
 import { onBeforeMount, ref } from 'vue';
@@ -184,6 +256,155 @@ const formSelectChange = async () => {
 	ElMessage.success("查询成功")
 } 
 
+// 新增会议弹窗
+const addForm = ref(false)
+// 新增会议按键点击逻辑
+const addInfoButton = () => {
+	addForm.value = true
+}
+// 注册表单
+const registerForm = ref({
+	meetingroomId: ref(),
+	meetingroomRentaldate: ref<Date>(),
+	meetingroomRentaltime: ref(),
+	rentalDescribe: ref<string>(''),
+	userId: ref(),
+	approveId: ref()
+})
+// 新增会议中的的options时间选择
+// 选择栏
+const value2 = ref('')
+const options2 = [
+	{
+		value: '09:00-10:00',
+		label: '09:00-10:00',
+		icon: Clock
+	},
+	{
+		value: '10:00-11:00',
+		label: '10:00-11:00',
+		icon: Clock
+	},
+	{
+		value: '11:00-12:00',
+		label: '11:00-12:00',
+		icon: Clock
+	},
+	{
+		value: '13:00-14:00',
+		label: '13:00-14:00',
+		icon: Clock
+	},
+	{
+		value: '14:00-15:00',
+		label: '14:00-15:00',
+		icon: Clock
+	},
+	{
+		value: '15:00-16:00',
+		label: '15:00-16:00',
+		icon: Clock
+	},
+]
+// 选择栏发生变化时的绑定事件
+const selectChange2 = async () => {
+	// 变量监听，让approval和value的值进行绑定
+	if (value2.value == "09:00-10:00") {
+		registerForm.value.meetingroomRentaltime = 0
+	}
+	else if (value2.value == "10:00-11:00") {
+		registerForm.value.meetingroomRentaltime = 1
+	}
+	else if (value2.value == "11:00-12:00") {
+		registerForm.value.meetingroomRentaltime = 2
+	}
+	else if (value2.value == "13:00-14:00") {
+		registerForm.value.meetingroomRentaltime = 3
+	}
+	else if (value2.value == "14:00-15:00") {
+		registerForm.value.meetingroomRentaltime = 4
+	}
+	else if (value2.value == "15:00-16:00") {
+		registerForm.value.meetingroomRentaltime = 5
+	}
+}
+// 新增会议弹窗的取消按钮逻辑
+const formAddDamage = () => {
+	registerForm.value.meetingroomId = undefined
+	registerForm.value.meetingroomRentaldate = undefined
+	registerForm.value.meetingroomRentaltime = undefined
+	registerForm.value.rentalDescribe = ''
+	registerForm.value.userId = undefined
+	registerForm.value.approveId = undefined
+	value2.value = ''
+	addForm.value = false
+}
+
+// 新增会议弹窗的新增按钮逻辑
+import { useTokenStore } from '@/stores/token';
+import { addNewRentalByAllParams, regretRentalService, deleteRentalService } from '@/api/auditManage';
+const tokenStore = useTokenStore()
+const formAddChange = async () => {
+	registerForm.value.approveId = tokenStore.userId
+	registerForm.value.userId = tokenStore.userId
+	let res = addNewRentalByAllParams(registerForm.value)
+	if ((await res).data.code === 1) {
+		formAddDamage()
+		ElMessage.success("新增成功")
+		handleCurrentChange()
+	} else {
+		ElMessage.error("新增的会议可能与已有会议冲突")
+	}
+}
+
+// 撤销删除绑定数据
+let rowNow = ref({
+	meetingroomId: ref(),
+	meetingroomRentaldate: ref<Date>(),
+	meetingroomRentaltime: ref(),
+	userId: ref(),
+	approveId: ref(),
+	rentalDescribe: ref<string>(''),
+})
+// 撤销确认框
+const centerDialogVisible = ref(false)
+// 撤销按钮按键逻辑
+const regretRentalButton = (row: any) => {
+	centerDialogVisible.value = true
+	rowNow.value = row.row
+}
+// 撤销按钮确定逻辑
+const regretInfo = async () => {
+	let res = regretRentalService(rowNow.value)
+	if ((await res).data.code === 1) {
+		ElMessage.success("撤销成功")
+		centerDialogVisible.value = false
+		handleCurrentChange()
+	} else {
+		ElMessage.error("异常错误,请联系管理员")
+	}
+}
+
+// 删除按钮弹出框
+const deleteVisible = ref(false)
+// 删除按钮操作逻辑
+const deleteRentalButton = (row: any) => {
+	deleteVisible.value = true
+	rowNow.value = row.row
+}
+// 删除弹出框中的确认逻辑
+const deleteInfo = async () => {
+	let res = deleteRentalService(rowNow.value)
+	if ((await res).data.code === 1) {
+		ElMessage.success("删除成功")
+		deleteVisible.value = false
+		handleCurrentChange()
+	} else {
+		ElMessage.error("异常错误,请联系管理员")
+	}
+}
+
+
 
 import { getRentalByParamsAndPage } from '@/api/auditManage';
 import { ElMessage } from 'element-plus';
@@ -197,7 +418,6 @@ let rentalData = ref([])
 let currentPage = ref(1)
 let pageSize = ref(10)
 let total = ref()
-let tempDate = ref<string>()
 // 参数清空
 const cleanParams = () => {
 	meetingroomId.value = undefined
@@ -207,7 +427,6 @@ const cleanParams = () => {
 	approveId.value = undefined
 	value.value = ''
 }
-
 const rentalList = async () => {
 	let params = {
 		page: currentPage.value,
