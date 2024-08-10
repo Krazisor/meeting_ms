@@ -11,7 +11,7 @@
             </el-header>
 
             <el-container>
-                <el-aside class="fixed-aside" style="width: 275px;">
+                <el-aside class="fixed-aside" style="width: 277px;">
                     <el-scrollbar>
                         <el-menu>
                             <el-sub-menu index="0">
