@@ -11,7 +11,7 @@
             </el-header>
 
             <el-container>
-                <el-aside class="fixed-aside">
+                <el-aside class="fixed-aside" style="width: 275px;">
                     <el-scrollbar>
                         <el-menu>
                             <el-sub-menu index="0">
@@ -178,8 +178,6 @@ const handleSelect = (key: string, keyPath: string[]) => {
 .fixed-aside {
     position: fixed;
     /* 固定定位 */
-    top: 60px;
-    /* 距离顶部的高度，避免与头部重叠 */
     left: 0;
     /* 左侧对齐 */
     height: calc(100% - 60px);
