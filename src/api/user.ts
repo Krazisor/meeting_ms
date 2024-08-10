@@ -77,4 +77,23 @@ export const adminLoginService = (loginData: any) => {
 
     const url = 'http://localhost:8080/adminLogin';
     return request.post(url, params)
-}
+}  
+
+export const BanUserService = (loginData: any) => {
+    const tokenStore = useTokenStore();
+    const token = tokenStore.token;
+    const params = new URLSearchParams()
+    const config = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+    };
+    for (let key in loginData) {
+        params.append(key, loginData[key])
+    }
+    console.log(params)
+
+    const url = 'http://localhost:8080/user/banById';
+    return request.post(url, params, config)
+}  

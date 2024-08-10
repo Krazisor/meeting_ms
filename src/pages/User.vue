@@ -13,17 +13,28 @@
 
 		<!-- 内容展示 -->
 		<el-table :data="tableData" size='large' style="width: 100%;" border>
-			<el-table-column fixed prop="userId" label="用户ID" min-width="80" />
+			<el-table-column fixed prop="userId" label="用户ID" min-width="85" />
 			<el-table-column prop="userName" label="用户名" min-width="140" />
 			<el-table-column prop="userPassword" label="密码" min-width="150" />
 			<el-table-column prop="userAge" label="年龄" min-width="80" />
 			<el-table-column prop="userEmail" label="邮箱" min-width="220" />
-			<el-table-column prop="userTel" label="电话号码" min-width="160" />
-			<el-table-column prop="userCreateTime" label="用户创建时间" :formatter="formatter" min-width="130" />
-			<el-table-column prop="userUpdateTime" label="用户更新时间" :formatter="formatter" min-width="130" />
-			<el-table-column fixed="right" label="操作" min-width="120">
+			<el-table-column prop="userTel" label="电话号码" min-width="150" />
+			<el-table-column prop="userCreateTime" label="用户创建时间" :formatter="formatter" min-width="125" />
+			<el-table-column prop="userUpdateTime" label="用户更新时间" :formatter="formatter" min-width="125" />
+			<el-table-column prop="isBanned" label="封禁情况" min-width="85">
+				<template #default="{ row }">
+					<span :style="{ color: row.isBanned === 1 ? 'red' : 'green' }">
+						{{ row.isBanned === 1 ? '封禁' : '正常' }}
+					</span>
+				</template>
+			</el-table-column>
+			<el-table-column fixed="right" label="操作" min-width="160">
 
 				<template #default="row">
+					<el-button link type="warning" size="default" plain @click="banInfo(row)" style="font-weight: bold">
+						<span v-if="row.row.isBanned === 1">解封</span>
+						<span v-else>封禁</span>
+					</el-button>
 					<el-button link type="primary" size="default" plain @click="getInfoNew(row)"
 						style="font-weight: bold">
 						修改
@@ -40,7 +51,7 @@
 		<!-- 分页 -->
 		<el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[5, 10, 20, 40]"
 			background layout="sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
-			@current-change="handleCurrentChange" :total="total" style="font-weight: bold"/>
+			@current-change="handleCurrentChange" :total="total" style="font-weight: bold" />
 	</div>
 
 	<!-- 删除确认框 -->
@@ -142,7 +153,7 @@
 							</div>
 						</div>
 					</template>
-					<el-tag type='success' round style="margin-left: 3px;">{{ rowNow.userId }}</el-tag>
+					<el-tag type='success' round style="margin-left: 3px;margin-right: 20px">{{ rowNow.userId}}</el-tag>
 				</el-descriptions-item>
 
 				<el-descriptions-item>
@@ -215,6 +226,7 @@
 					<el-input v-model="rowNow.userEmail" class="class1"></el-input>
 				</el-descriptions-item>
 
+
 			</el-descriptions>
 
 		</span>
@@ -228,6 +240,36 @@
 		</template>
 	</el-dialog>
 
+	<!-- 封禁确认框 -->
+	<el-dialog v-model="banDialog" title="Warning" width="500" align-center>
+		<span>你确定要进行对 ID:{{ rowNow.userId }} 的进行封禁吗?</span>
+		<template #footer>
+			<div class="dialog-footer">
+				<el-button @click="banDialog = false" style="font-weight: bold">
+					取消
+				</el-button>
+				<el-button type="primary" @click="banRequest()" style="font-weight: bold">
+					确定
+				</el-button>
+			</div>
+		</template>
+	</el-dialog>
+
+	<!-- 解封确认框 -->
+	<el-dialog v-model="disBanDialog" title="Warning" width="500" align-center>
+		<span>你确定要进行对 ID:{{ rowNow.userId }} 的进行解封吗?</span>
+		<template #footer>
+			<div class="dialog-footer">
+				<el-button @click="disBanDialog = false" style="font-weight: bold">
+					取消
+				</el-button>
+				<el-button type="primary" @click="banRequest()" style="font-weight: bold">
+					确定
+				</el-button>
+			</div>
+		</template>
+	</el-dialog>
+
 </template>
 
 
@@ -235,7 +277,45 @@
 import { ref, h, onBeforeMount } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElNotification } from 'element-plus'
-import { Search,  Upload } from '@element-plus/icons-vue'
+import { Search, Upload } from '@element-plus/icons-vue'
+// 封禁弹窗
+const banDialog = ref(false)
+// 解封弹窗
+const disBanDialog = ref(false)
+// 封禁解封
+const banInfo = (row: any) => {
+	if (row.row.isBanned === 0) {
+		rowNow.value = row.row
+		banDialog.value = true
+	} else {
+		rowNow.value = row.row
+		disBanDialog.value = true
+	}
+}
+// 封禁解封服务
+import { BanUserService } from '@/api/user';
+const banRequest = async () => {
+	let ban = ref(0)
+	if (rowNow.value.isBanned === 0) {
+		ban.value = 1
+	}
+	let params = ref({
+		userId: ref(rowNow.value.userId) ,
+		isBanned: ref(ban.value)
+	})
+	let res = BanUserService(params.value)
+	if ((await res).data.code === 0) {
+		ElMessage.error("无法操作,请联系上层管理员")
+		disBanDialog.value = false
+		banDialog.value = false
+	} else {
+		disBanDialog.value = false
+		banDialog.value = false
+		ElMessage.success("操作成功")
+		handleCurrentChange()
+	}
+}
+
 // 查询表单左侧宽度
 const formLabelWidth = '100px'
 // 搜索时的选中
@@ -362,7 +442,8 @@ let rowNow = ref({
 	userAge: ref<number>(),
 	userTel: ref<string>(""),
 	userEmail: ref<string>(""),
-	userPassword: ref<string>("")
+	userPassword: ref<string>(""),
+	isBanned:ref()
 })
 function getInfoNew(row: any) {
 	console.log(row)
