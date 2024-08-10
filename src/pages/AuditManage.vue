@@ -1,7 +1,6 @@
 <template>
 	<div class="auditManage">
-		<div class="title"
-			style="margin-left: 10px;margin-top: 20px;font-weight: bold;font-size: 40px;color: #2c5d9d;text-align: left">
+		<div class="title">
 			会议管理
 		</div>
 		<!-- 筛选框 -->
@@ -13,7 +12,7 @@
 		</div>
 
 		<!-- 内容展示 -->
-		<el-table :data="rentalData" size='large' style="width: 100%;">
+		<el-table :data="rentalData" size='large' style="width: 100%;" border>
 			<el-table-column fixed prop="meetingroomId" label="请求房间号" min-width="80" />
 			<el-table-column fixed prop="meetingroomRentaldate" label="会议日期" min-width="120" />
 			<el-table-column fixed prop="meetingroomRentaltime" label="会议时间" min-width="120"
@@ -143,7 +142,7 @@
 
 	<!-- 删除确认框 -->
 	<el-dialog v-model="deleteVisible" title="Warning" width="500" align-center>
-		<span>你确定要删除 房间号:{{ rowNow.meetingroomId }} 此时间段的会议信息吗?  删除后不可恢复！</span>
+		<span>你确定要删除 房间号:{{ rowNow.meetingroomId }} 此时间段的会议信息吗? 删除后不可恢复！</span>
 		<template #footer>
 			<div class="dialog-footer">
 				<el-button @click="deleteVisible = false" style="font-weight: bold">
@@ -493,5 +492,30 @@ onBeforeMount(async () => {
 	/* 悬停时的渐变效果 */
 	transform: scale(1.05);
 	/* 悬停时放大效果 */
+}
+
+.title {
+	margin-left: 10px;
+	/* 左边距 */
+	margin-top: 20px;
+	/* 上边距 */
+	font-weight: bold;
+	/* 字体加粗 */
+	font-size: 40px;
+	/* 字体大小 */
+	color: #2c5d9d;
+	/* 字体颜色 */
+	text-align: left;
+	/* 左对齐 */
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+	/* 添加轻微的阴影效果 */
+	transition: color 0.3s;
+	/* 字体颜色过渡效果 */
+}
+
+/* 鼠标悬停效果 */
+.title:hover {
+	color: #1a3e6d;
+	/* 悬停时的字体颜色 */
 }
 </style>

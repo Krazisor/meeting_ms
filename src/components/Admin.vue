@@ -9,9 +9,9 @@
                     </div>
                 </header>
             </el-header>
+
             <el-container>
                 <el-aside width="300px">
-
                     <el-scrollbar>
                         <el-menu>
                             <el-sub-menu index="0">
@@ -78,7 +78,9 @@
                                 </template>
                                 <el-menu-item-group>
                                     <template #title>有关管理员与管理权限</template>
-                                    <el-menu-item index="3-1">管理员晋升与调配</el-menu-item>
+                                    <RouterLink to="/adminManage" :style="{ textDecoration: 'none' }">
+                                        <el-menu-item index="3-1">管理员晋升与调配</el-menu-item>
+                                    </RouterLink>
                                 </el-menu-item-group>
                             </el-sub-menu>
                         </el-menu>
@@ -102,139 +104,144 @@ const handleSelect = (key: string, keyPath: string[]) => {
 </script>
 
 <style scoped>
-body,
-html {
-    margin: 0;
-    padding: 0%;
-    height: 100%;
-    overflow: hidden;
-    /* 防止滚动条 */
-}
 
+/* 顶栏样式 */
 .header {
     display: flex;
+    /* 使用 Flexbox 布局 */
     align-items: center;
+    /* 垂直居中对齐 */
     justify-content: space-between;
-    padding: 20px;
-    color: white;
-    height: 20px;
-    animation: gradientAnimation 5s ease infinite;
-    /* 渐变背景动画 */
-    position: relative;
+    /* 水平两端对齐 */
+    background-color: #1f77d5;
+    /* 背景颜色 */
+    color: #ffffff;
+    /* 字体颜色 */
+    padding: 14px 20px;
+    /* 内边距 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* 添加阴影效果 */
 }
 
-/* Logo 动画 */
+/* Logo 样式 */
 .logo {
     font-size: 24px;
+    /* 字体大小 */
     font-weight: bold;
-    animation: logoAnimation 5s ease infinite;
-    /* Logo 动画 */
+    /* 加粗字体 */
 }
 
 /* 描述文本样式 */
 .description {
-    max-width: 600px;
-    margin: 0 20px;
-    animation: fadeIn 3s ease infinite;
-    /* 描述文本淡入动画 */
+    font-size: 16px;
+    /* 字体大小 */
+    font-weight: 300;
+    /* 轻字体 */
+    opacity: 0.9;
+    /* 轻微透明效果 */
 }
 
-@keyframes gradientAnimation {
-    0% {
-        background: linear-gradient(270deg, #ff7e5f, #feb47b);
-    }
 
-    5% {
-        background: linear-gradient(270deg, #ff8361, #feb47b);
-    }
-
-    10% {
-        background: linear-gradient(270deg, #ff8764, #feb47b);
-    }
-
-    15% {
-        background: linear-gradient(270deg, #ff8c66, #feb47b);
-    }
-
-    20% {
-        background: linear-gradient(270deg, #ff9068, #feb47b);
-    }
-
-    25% {
-        background: linear-gradient(270deg, #ff946b, #feb47b);
-    }
-
-    30% {
-        background: linear-gradient(270deg, #ff999d, #feb47b);
-    }
-
-    35% {
-        background: linear-gradient(270deg, #fe9e6f, #feb47b);
-    }
-
-    40% {
-        background: linear-gradient(270deg, #fea272, #feb47b);
-    }
-
-    45% {
-        background: linear-gradient(270deg, #fea774, #feb47b);
-    }
-
-    50% {
-        background: linear-gradient(270deg, #feab76, #feb47b);
-    }
-
-    55% {
-        background: linear-gradient(270deg, #fea774, #feb47b);
-    }
-
-    60% {
-        background: linear-gradient(270deg, #fea272, #feb47b);
-    }
-
-    65% {
-        background: linear-gradient(270deg, #fe9e6f, #feb47b);
-    }
-
-    70% {
-        background: linear-gradient(270deg, #ff999d, #feb47b);
-    }
-
-    75% {
-        background: linear-gradient(270deg, #ff946b, #feb47b);
-    }
-
-    80% {
-        background: linear-gradient(270deg, #ff9068, #feb47b);
-    }
-
-    85% {
-        background: linear-gradient(270deg, #ff8c66, #feb47b);
-    }
-
-    90% {
-        background: linear-gradient(270deg, #ff8764, #feb47b);
-    }
-
-    95% {
-        background: linear-gradient(270deg, #ff8361, #feb47b);
-    }
-
-    100% {
-        background: linear-gradient(270deg, #ff7e5f, #feb47b);
-    }
+/* aside */
+/* 侧栏容器样式 */
+.el-scrollbar {
+    width: 250px;
+    /* 侧栏宽度 */
+    background-color: #f8f9fa;
+    /* 背景颜色 */
+    border-right: 1px solid #dee2e6;
+    /* 边框颜色 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    /* 添加阴影效果 */
 }
 
-@keyframes logoAnimation {
+/* 菜单标题样式 */
+.el-menu {
+    border: none;
+    /* 去掉默认边框 */
+}
 
-    0%,
-    100% {
-        transform: scale(1);
-    }
+/* 子菜单标题样式 */
+.el-sub-menu {
+    background-color: #f8f9fa;
+    /* 子菜单背景颜色 */
+}
 
-    50% {
-        transform: scale(1.1);
-        /* Logo 放大效果 */
-    }
+/* 子菜单标题 hover 状态 */
+.el-sub-menu:hover {
+    background-color: #e9ecef;
+    /* hover 状态颜色 */
+}
+
+/* 菜单项样式 */
+.el-menu-item {
+    padding: 12px 20px;
+    /* 内边距 */
+    color: #495057;
+    /* 字体颜色 */
+    transition: background-color 0.3s, color 0.3s;
+    /* 背景颜色和字体颜色过渡效果 */
+}
+
+/* 菜单项 hover 状态 */
+.el-menu-item:hover {
+    background-color: #e2e6ea;
+    /* hover 状态背景颜色 */
+    color: #007bff;
+    /* hover 状态字体颜色 */
+}
+
+/* 菜单项选中状态 */
+.el-menu-item.is-active {
+    background-color: #007bff;
+    /* 选中状态背景颜色 */
+    color: #ffffff;
+    /* 选中状态字体颜色 */
+}
+
+/* 确保选中状态不被 hover 状态覆盖 */
+.el-menu-item.is-active:hover {
+    background-color: #0056b3;
+    /* 保持选中状态背景颜色 */
+    color: #ffffff;
+    /* 保持选中状态字体颜色 */
+}
+
+/* 菜单图标样式 */
+.el-icon {
+    margin-right: 10px;
+    /* 图标与文本之间的间距 */
+    color: #007bff;
+    /* 图标颜色 */
+}
+
+/* 子菜单项标题样式 */
+.el-menu-item-group {
+    padding: 10px 20px;
+    /* 内边距 */
+    color: #6c757d;
+    /* 字体颜色 */
+    font-weight: bold;
+    /* 加粗字体 */
+}
+
+/* 子菜单项标题 hover 状态 */
+.el-menu-item-group:hover {
+    color: #495057;
+    /* hover 状态字体颜色 */
+}
+
+/* 子菜单项的背景颜色 */
+.el-menu-item-group:hover .el-menu-item {
+    background-color: #e9ecef;
+    /* 子菜单项 hover 状态背景颜色 */
+}
+
+/* 额外的分隔线样式 */
+.el-menu-item-group+.el-menu-item-group {
+    border-top: 1px solid #dee2e6;
+    /* 分隔线 */
+    margin-top: 10px;
+    /* 分隔线与上方的间距 */
 }
 </style>

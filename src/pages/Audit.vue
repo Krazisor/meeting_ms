@@ -1,7 +1,6 @@
 <template>
     <div class="audit">
-        <div class="title"
-            style="margin-left: 10px;margin-top: 20px;font-weight: bold;font-size: 40px;color: #2c5d9d;text-align: left">
+        <div class="title">
             会议审核
         </div>
         <!-- 筛选框 -->
@@ -23,7 +22,7 @@
         </div>
 
         <!-- 内容展示 -->
-        <el-table :data="requestData" size='large' style="width: 100%;">
+        <el-table :data="requestData" size='large' style="width: 100%;" border>
             <el-table-column fixed prop="rentalId" label="请求ID" min-width="80" />
             <el-table-column prop="userId" label="请求用户ID" min-width="80" />
             <el-table-column prop="meetingroomId" label="请求房间号" min-width="80" />
@@ -67,8 +66,8 @@
                 <el-input v-model="meetingroomId" autocomplete="off" placeholder="请输入房间号" clearable />
             </el-form-item>
             <el-form-item label="请求日期" label-width="100px">
-                <el-date-picker v-model="meetingroomRentaldateTemp" type="date" placeholder="请选择请求日期" clearable style="width: 300px"
-                 format="YYYY/MM/DD" value-format="YYYY-MM-DD" />
+                <el-date-picker v-model="meetingroomRentaldateTemp" type="date" placeholder="请选择请求日期" clearable
+                    style="width: 300px" format="YYYY/MM/DD" value-format="YYYY-MM-DD" />
             </el-form-item>
             <el-form-item label="请求时间" label-width="100px">
                 <el-select v-model="value2" placeholder="请选择请求时间" style="width: 300px" clearable
@@ -419,5 +418,30 @@ onBeforeMount(async () => {
     /* 悬停时的渐变效果 */
     transform: scale(1.05);
     /* 悬停时放大效果 */
+}
+
+.title {
+    margin-left: 10px;
+    /* 左边距 */
+    margin-top: 20px;
+    /* 上边距 */
+    font-weight: bold;
+    /* 字体加粗 */
+    font-size: 40px;
+    /* 字体大小 */
+    color: #2c5d9d;
+    /* 字体颜色 */
+    text-align: left;
+    /* 左对齐 */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    /* 添加轻微的阴影效果 */
+    transition: color 0.3s;
+    /* 字体颜色过渡效果 */
+}
+
+/* 鼠标悬停效果 */
+.title:hover {
+    color: #1a3e6d;
+    /* 悬停时的字体颜色 */
 }
 </style>

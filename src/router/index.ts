@@ -4,6 +4,7 @@ import Meeting from '@/pages/Meeting.vue';
 import AuditManage from '@/pages/AuditManage.vue';
 import Audit from '@/pages/Audit.vue';
 import AboutMe from '@/pages/AboutMe.vue';
+import AdminManage from '@/pages/AdminManage.vue';
 
 const router = createRouter({
   history:createWebHistory(),
@@ -28,10 +29,14 @@ const router = createRouter({
       path: '/aboutMe',
       component: AboutMe
     },
+    {
+      path: '/adminManage',
+      component:AdminManage
+    },
     // 重定向
     {
-        path:'/',
-        redirect:'/user'
+      path:'/',
+      redirect:'/aboutMe'
     }
   ]
 })

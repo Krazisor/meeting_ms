@@ -1,7 +1,6 @@
 <template>
 	<div class="meeting">
-		<div class="title"
-			style="margin-left: 10px;margin-top: 20px;font-weight: bold;font-size: 40px;color: #2c5d9d;text-align: left">
+		<div class="title">
 			会议室列表
 		</div>
 		<!-- 筛选框 -->
@@ -403,5 +402,30 @@ const handleCurrentChange = async () => {
 	/* 悬停时的渐变效果 */
 	transform: scale(1.05);
 	/* 悬停时放大效果 */
+}
+
+.title {
+	margin-left: 10px;
+	/* 左边距 */
+	margin-top: 20px;
+	/* 上边距 */
+	font-weight: bold;
+	/* 字体加粗 */
+	font-size: 40px;
+	/* 字体大小 */
+	color: #2c5d9d;
+	/* 字体颜色 */
+	text-align: left;
+	/* 左对齐 */
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+	/* 添加轻微的阴影效果 */
+	transition: color 0.3s;
+	/* 字体颜色过渡效果 */
+}
+
+/* 鼠标悬停效果 */
+.title:hover {
+	color: #1a3e6d;
+	/* 悬停时的字体颜色 */
 }
 </style>
