@@ -1,7 +1,7 @@
 <template>
     <div class="common-layout">
         <el-container>
-            <el-header style="padding-left: 0%;padding-right: 0%">
+            <el-header style="padding-left: 0%;padding-right: 0%;">
                 <header class="header">
                     <div class="logo" style="margin-left: 20px;">Meeting Management</div>
                     <div class="description">
@@ -11,7 +11,7 @@
             </el-header>
 
             <el-container>
-                <el-aside width="300px">
+                <el-aside class="fixed-aside">
                     <el-scrollbar>
                         <el-menu>
                             <el-sub-menu index="0">
@@ -85,9 +85,9 @@
                             </el-sub-menu>
                         </el-menu>
                     </el-scrollbar>
-
                 </el-aside>
-                <el-main overflow-y: scroll>
+
+                <el-main overflow-y: scroll class="content">
                     <RouterView></RouterView>
                 </el-main>
             </el-container>
@@ -121,6 +121,16 @@ const handleSelect = (key: string, keyPath: string[]) => {
     /* 内边距 */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* 添加阴影效果 */
+    position: fixed;
+    /* 固定定位 */
+    top: 0;
+    /* 顶部对齐 */
+    left: 0;
+    /* 左侧对齐 */
+    right: 0;
+    /* 右侧对齐 */
+    z-index: 1000;
+    /* 确保在其他元素之上 */
 }
 
 /* Logo 样式 */
@@ -141,11 +151,51 @@ const handleSelect = (key: string, keyPath: string[]) => {
     /* 轻微透明效果 */
 }
 
+.fixed-header {
+    position: fixed;
+    /* 固定定位 */
+    top: 0;
+    /* 顶部对齐 */
+    left: 0;
+    /* 左侧对齐 */
+    right: 0;
+    /* 右侧对齐 */
+    z-index: 1000;
+    /* 确保在其他元素之上 */
+}
+/* container */
+.content {
+    margin-left: 275px;
+    /* 为了避免内容被固定的侧边栏遮挡，设置左边距 */
+    padding-left: 20px;
+    /* 内容的内边距 */
+    background-color: #f8f9fa;
+    /* 内容区域背景颜色 */
+}
+
 
 /* aside */
+.fixed-aside {
+    position: fixed;
+    /* 固定定位 */
+    top: 60px;
+    /* 距离顶部的高度，避免与头部重叠 */
+    left: 0;
+    /* 左侧对齐 */
+    height: calc(100% - 60px);
+    /* 计算高度，减去头部的高度 */
+    overflow-y: auto;
+    /* 允许垂直滚动 */
+    background-color: #ffffff;
+    /* 背景颜色 */
+    border-right: 1px solid #e0e0e0;
+    /* 边框颜色 */
+    z-index: 999;
+    /* 确保在其他元素之上 */
+}
 /* 侧栏容器样式 */
 .el-scrollbar {
-    width: 250px;
+    width: 275px;
     /* 侧栏宽度 */
     background-color: #f8f9fa;
     /* 背景颜色 */
