@@ -22,10 +22,15 @@
 					<el-button link type="primary" size="default" plain @click="getInfo(row)" style="font-weight: bold">
 						修改
 					</el-button>
-					<el-button link type="danger" size="default" plain @click="deleteButton(row)"
-						style="font-weight: bold">
-						删除
-					</el-button>
+					<el-popconfirm width="220" confirm-button-text="删除" cancel-button-text="算了" icon-color="#626AEF"
+						title="你确定要删除这个会议室吗?" @confirm="deleteInfo" @cancel="cleanParams">
+						<template #reference>
+							<el-button link type="danger" size="default" plain @click="deleteButton(row)"
+								style="font-weight: bold">
+								删除
+							</el-button>
+						</template>
+					</el-popconfirm>
 				</template>
 
 			</el-table-column>
@@ -84,23 +89,6 @@
 			</div>
 		</template>
 	</el-dialog>
-
-	<!-- 删除确认框 -->
-	<div>
-		<el-dialog v-model="centerDialogVisible" title="Warning" width="500" align-center style="font-weight: bold">
-			<span>你确定要删除 房间号:{{ meetingroomId }} 的相关信息吗?</span>
-			<template #footer>
-				<div class="dialog-footer">
-					<el-button @click="deleteInfoDamage" style="font-weight: bold">
-						取消
-					</el-button>
-					<el-button type="primary" @click="deleteInfo()" style="font-weight: bold">
-						确定
-					</el-button>
-				</div>
-			</template>
-		</el-dialog>
-	</div>
 
 	<!-- 会议室修改界面弹出框 -->
 	<el-dialog v-model="changeDialog" title="修改会议室信息" width="600" align-center style="font-weight: bold">
@@ -241,17 +229,9 @@ const addFormSuccess = () => {
 }
 
 
-// 删除确认框
-const centerDialogVisible = ref(false)
 // 删除按钮操作逻辑
 const deleteButton = (row: any) => {
 	meetingroomId.value = row.row.meetingroomId
-	centerDialogVisible.value = true
-}
-// 删除确认框中的取消按键操作逻辑
-const deleteInfoDamage = () => {
-	cleanParams()
-	centerDialogVisible.value = false
 }
 // 删除确认框中的确定按钮操作逻辑
 const deleteInfo = async () => {
@@ -261,8 +241,8 @@ const deleteInfo = async () => {
 		deleteInfoFailure()
 	}
 	else {
+		cleanParams()
 		deleteInfoSuccess()
-		deleteInfoDamage()
 		handleCurrentChange()
 	}
 }

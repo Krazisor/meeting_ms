@@ -39,10 +39,15 @@
 						style="font-weight: bold">
 						修改
 					</el-button>
-					<el-button link type="danger" size="default" plain @click="deleteButton(row)"
-						style="font-weight: bold">
-						删除
-					</el-button>
+					<el-popconfirm width="220" confirm-button-text="删除" cancel-button-text="算了"
+						 icon-color="#626AEF" title="你确定要删除这个用户嘛?" @confirm="deleteInfo()">
+						<template #reference>
+							<el-button link type="danger" size="default" plain @click="deleteButton(row)"
+								style="font-weight: bold">
+								删除
+							</el-button>
+						</template>
+					</el-popconfirm>
 				</template>
 
 			</el-table-column>
@@ -52,23 +57,6 @@
 		<el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[5, 10, 20, 40]"
 			background layout="sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
 			@current-change="handleCurrentChange" :total="total" style="font-weight: bold" />
-	</div>
-
-	<!-- 删除确认框 -->
-	<div>
-		<el-dialog v-model="centerDialogVisible" title="Warning" width="500" align-center>
-			<span>你确定要删除 ID:{{ rowNow.userId }} 的相关信息吗?</span>
-			<template #footer>
-				<div class="dialog-footer">
-					<el-button @click="centerDialogVisible = false" style="font-weight: bold">
-						取消
-					</el-button>
-					<el-button type="primary" @click="deleteInfo()" style="font-weight: bold">
-						确定
-					</el-button>
-				</div>
-			</template>
-		</el-dialog>
 	</div>
 
 	<!-- 查询弹出框(已完善) -->
@@ -409,8 +397,6 @@ const handleCurrentChange = async () => {
 	tableData.value = (await (userList())).data.data.rows
 }
 
-// 删除弹窗
-const centerDialogVisible = ref(false)
 // 修改弹出框
 const changeDialog = ref(false)
 // 查询弹出框
@@ -455,12 +441,10 @@ import { deleteUserById } from '@/api/user';
 // 删除按钮的绑定
 const deleteButton = async (row: any) => {
 	rowNow.value.userId = row.row.userId
-	centerDialogVisible.value = true
 }
 
 // 删除二次确认框相关的确认信息
 const deleteInfo = async () => {
-	centerDialogVisible.value = false
 	// @ts-ignore
 	let res = deleteUserById(rowNow.value.userId)
 	if ((await res).data.code === 1) {

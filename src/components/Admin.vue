@@ -66,7 +66,9 @@
                                     <RouterLink to="/auditManage" :style="{ textDecoration: 'none' }">
                                         <el-menu-item index="2-3">会议管理</el-menu-item>
                                     </RouterLink>
-                                    <el-menu-item index="2-4">会议总览</el-menu-item>
+                                    <RouterLink to="/meetingView" :style="{ textDecoration: 'none' }">
+                                        <el-menu-item index="2-4">会议总览</el-menu-item>
+                                    </RouterLink>
                                 </el-menu-item-group>
                             </el-sub-menu>
 
@@ -96,11 +98,7 @@
 </template>
 
 <script setup lang="ts" name="">
-import { ref } from 'vue'
-const activeIndex = ref('1')
-const handleSelect = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-}
+
 </script>
 
 <style scoped>

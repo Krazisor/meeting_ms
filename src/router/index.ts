@@ -5,6 +5,7 @@ import AuditManage from '@/pages/AuditManage.vue';
 import Audit from '@/pages/Audit.vue';
 import AboutMe from '@/pages/AboutMe.vue';
 import AdminManage from '@/pages/AdminManage.vue';
+import MeetingView from '@/pages/meetingView.vue';
 
 const router = createRouter({
   history:createWebHistory(),
@@ -32,6 +33,10 @@ const router = createRouter({
     {
       path: '/adminManage',
       component:AdminManage
+    },
+    {
+      path: '/meetingView',
+      component:MeetingView
     },
     // 重定向
     {
