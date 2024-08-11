@@ -32,7 +32,7 @@
 
                             </el-sub-menu>
 
-                            <el-sub-menu index="1">
+                            <el-sub-menu index="1" :disabled="!rightOfUser">
                                 <template #title>
                                     <el-icon>
                                         <User />
@@ -40,16 +40,15 @@
                                 </template>
                                 <el-menu-item-group>
                                     <template #title>用户信息的相关操作</template>
-
                                     <RouterLink to="/user" :style="{ textDecoration: 'none' }">
                                         <el-menu-item index="1-1">
                                             用户列表
                                         </el-menu-item>
                                     </RouterLink>
                                 </el-menu-item-group>
-
                             </el-sub-menu>
-                            <el-sub-menu index="2">
+
+                            <el-sub-menu index="2" :disabled="!rightOfMeeting">
                                 <template #title>
                                     <el-icon>
                                         <Message />
@@ -70,20 +69,21 @@
                                         <el-menu-item index="2-4">会议总览</el-menu-item>
                                     </RouterLink>
                                 </el-menu-item-group>
+
                             </el-sub-menu>
 
-                            <el-sub-menu index="3">
+                            <el-sub-menu index="3" :disabled="!rightOfAdmin">
                                 <template #title>
                                     <el-icon>
                                         <setting />
                                     </el-icon>管理员管理
                                 </template>
-                                <el-menu-item-group>
-                                    <template #title>有关管理员与管理权限</template>
-                                    <RouterLink to="/adminManage" :style="{ textDecoration: 'none' }">
-                                        <el-menu-item index="3-1">管理员晋升与调配</el-menu-item>
-                                    </RouterLink>
-                                </el-menu-item-group>
+                                    <el-menu-item-group>
+                                        <template #title>有关管理员与管理权限</template>
+                                        <RouterLink to="/adminManage" :style="{ textDecoration: 'none' }">
+                                            <el-menu-item index="3-1">管理员晋升与调配</el-menu-item>
+                                        </RouterLink>
+                                    </el-menu-item-group>
                             </el-sub-menu>
                         </el-menu>
                     </el-scrollbar>
@@ -98,6 +98,43 @@
 </template>
 
 <script setup lang="ts" name="">
+import { selectUserById } from '@/api/user';
+import Meeting from '@/pages/Meeting.vue';
+import AdminManage from '@/pages/AdminManage.vue';
+import { useTokenStore } from '@/stores/token';
+import { onMounted, ref } from 'vue';
+
+
+const tokenStore = useTokenStore() 
+let rightOfUser = ref<boolean>(false)
+let rightOfMeeting = ref<boolean>(false)
+let rightOfAdmin = ref<boolean>(false)
+onMounted(async () => {
+    if (tokenStore.userId == '') {
+        rightOfUser.value = false
+        rightOfMeeting.value = false
+        rightOfAdmin.value = false
+    } else {
+        let res = selectUserById(tokenStore.userId)
+        if ((await res).data.data.userRoleA == 1) {
+            rightOfUser.value = true
+        }
+        if ((await res).data.data.userRoleB == 1) {
+            rightOfMeeting.value = true
+        }
+        if ((await res).data.data.userRoleC == 1) {
+            rightOfUser.value = true
+            rightOfMeeting.value = true
+            rightOfAdmin.value = true
+        }
+        if ((await res).data.data.userSuperAdmin == 1) { 
+            rightOfUser.value = true
+            rightOfMeeting.value = true
+            rightOfAdmin.value = true
+        }
+    }
+})
+
 
 </script>
 

@@ -39,8 +39,8 @@
 						style="font-weight: bold">
 						修改
 					</el-button>
-					<el-popconfirm width="220" confirm-button-text="删除" cancel-button-text="算了"
-						 icon-color="#626AEF" title="你确定要删除这个用户嘛?" @confirm="deleteInfo()">
+					<el-popconfirm width="220" confirm-button-text="删除" cancel-button-text="算了" icon-color="#626AEF"
+						title="你确定要删除这个用户嘛?" @confirm="deleteInfo()">
 						<template #reference>
 							<el-button link type="danger" size="default" plain @click="deleteButton(row)"
 								style="font-weight: bold">
@@ -190,7 +190,7 @@
 					<template #label>
 						<div class="cell-item">
 							<el-icon>
-								<Postcard />
+								<Ticket />
 							</el-icon>
 							<div style="margin-left: 3px;">
 								年龄

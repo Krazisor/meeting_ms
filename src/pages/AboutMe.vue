@@ -70,7 +70,7 @@
                 <template #label>
                     <div class="cell-item">
                         <el-icon>
-                            <Postcard />
+                            <Ticket />
                         </el-icon>
                         <div style="margin-left: 3px;">
                             年龄
@@ -100,7 +100,7 @@
                 <template #label>
                     <div class="cell-item">
                         <el-icon>
-                            <DocumentCopy />
+                            <Clock />
                         </el-icon>
                         <div style="margin-left: 3px;">
                             用户创建时间
@@ -116,7 +116,7 @@
                 <template #label>
                     <div class="cell-item">
                         <el-icon>
-                            <DocumentCopy />
+                            <Clock />
                         </el-icon>
                         <div style="margin-left: 3px;">
                             用户更新时间
@@ -132,7 +132,7 @@
                 <template #label>
                     <div class="cell-item">
                         <el-icon>
-                            <DocumentCopy />
+                            <Avatar />
                         </el-icon>
                         <div style="margin-left: 3px;">
                             超级管理员权限
@@ -148,7 +148,7 @@
                 <template #label>
                     <div class="cell-item">
                         <el-icon>
-                            <DocumentCopy />
+                            <View />
                         </el-icon>
                         <div style="margin-left: 3px;">
                             用户管理权限
@@ -164,7 +164,7 @@
                 <template #label>
                     <div class="cell-item">
                         <el-icon>
-                            <DocumentCopy />
+                            <HomeFilled />
                         </el-icon>
                         <div style="margin-left: 3px;">
                             会议管理权限
@@ -181,7 +181,7 @@
                 <template #label>
                     <div class="cell-item">
                         <el-icon>
-                            <DocumentCopy />
+                            <HelpFilled />
                         </el-icon>
                         <div style="margin-left: 3px;">
                             管理员管理权限
@@ -228,6 +228,7 @@ import { adminLoginService } from '@/api/user';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useTokenStore } from '@/stores/token';
 import { ElMessage } from 'element-plus';
+import { Avatar } from '@element-plus/icons-vue'
 const tokenStore = useTokenStore()
 // 注册界面
 const dialogFormVisible = ref(false)
@@ -262,6 +263,7 @@ const loginAdmin = async () => {
             tokenStore.setToken(result.data.data);
             tokenStore.setUserId(loginData.value.userId)
             getInfo(tokenStore.userId)
+            window.location.reload()
         }
     } catch (error) {
         // 处理网络错误或其他异常情况
