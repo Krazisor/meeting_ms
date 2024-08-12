@@ -56,7 +56,7 @@ export const updateUserByAnyParams = (selectData: any) => {
     return request.post(url, JSON.stringify(selectData), config)
 }
 
-export const deleteUserById = (id: number) => {
+export const deleteUserById = (myId: number,id: number) => {
     const tokenStore = useTokenStore();
     const token = tokenStore.token;
     const config = {
@@ -66,7 +66,7 @@ export const deleteUserById = (id: number) => {
         },
     };
     const url = 'http://localhost:8080/user/delete';
-    return request.get(url + "?userId=" + id, config)
+    return request.get(url + "?myUserId=" + myId + "&userId=" + id, config)
 }
 
 export const adminLoginService = (loginData: any) => {
@@ -136,3 +136,31 @@ export const selectUserById = (id: number) => {
     const url = 'http://localhost:8080/user/getById';
     return request.get(url + "?userId=" + id, config)
 } 
+
+export const updateRoleByUserAndId = (selectData: any) => {
+    const tokenStore = useTokenStore();
+    const token = tokenStore.token;
+
+    const config = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json'
+        },
+    };
+
+    const url = 'http://localhost:8080/user/updateRole';
+
+    // 将要发送的数据作为第二个参数，配置作为第三个参数
+    const data = {
+        myUserId: selectData.myUserId,
+        user: {
+            userId: selectData.user.userId,
+            userRoleA: selectData.user.userRoleA,
+            userRoleB: selectData.user.userRoleB,
+            userRoleC: selectData.user.userRoleC,
+            userSuperAdmin: selectData.user.userSuperAdmin
+        }
+    };
+
+    return request.post(url, data, config);
+}

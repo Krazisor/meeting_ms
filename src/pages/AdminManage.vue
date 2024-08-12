@@ -95,13 +95,99 @@
         </template>
     </el-dialog>
 
-    <!-- 修改气泡框 -->
-    <el-popconfirm width="220" confirm-button-text="OK" cancel-button-text="No, Thanks" :icon="InfoFilled"
-        icon-color="#626AEF" title="Are you sure to delete this?">
-        <template #reference>
-            <el-button>Delete</el-button>
+    <!-- 修改权限弹出框 -->
+    <el-dialog v-model="changeVisible" title="修改权限" width="500" align-center style="font-weight: bold">
+        <el-form width="">
+            <el-descriptions class="margin-top" :column="2" border>
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            <el-icon>
+                                <DocumentCopy />
+                            </el-icon>
+                            <div style="margin-left: 3px;">
+                                用户ID
+                            </div>
+                        </div>
+                    </template>
+                    <!-- @vue-skip -->
+                    <el-tag type='success' round style="margin-left: 3px;margin-right: 20px">{{ rowNow.userId
+                        }}</el-tag>
+                </el-descriptions-item>
+
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            <el-icon>
+                                <user />
+                            </el-icon>
+                            <div style="margin-left: 3px;">
+                                用户名
+                            </div>
+                        </div>
+                    </template>
+                    <!-- @vue-skip -->
+                    <el-tag type='primary' round style="margin-left: 3px;margin-right: 20px">{{ rowNow.userName
+                        }}</el-tag>
+                </el-descriptions-item>
+            </el-descriptions>
+
+            <el-descriptions class="margin-top" :column="1" border>
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            <el-icon>
+                                <View />
+                            </el-icon>
+                            <div style="margin-left: 3px;">
+                                用户管理权限
+                            </div>
+                        </div>
+                    </template>
+                    <!-- @vue-skip -->
+                    <el-segmented v-model="innerRoleA" :options="innerRolesOptions" />
+                </el-descriptions-item>
+
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            <el-icon>
+                                <HomeFilled />
+                            </el-icon>
+                            <div style="margin-left: 3px;">
+                                会议管理权限
+                            </div>
+                        </div>
+                    </template>
+                    <!-- @vue-skip -->
+                    <el-segmented v-model="innerRoleB" :options="innerRolesOptions" />
+                </el-descriptions-item>
+
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            <el-icon>
+                                <HelpFilled />
+                            </el-icon>
+                            <div style="margin-left: 3px;">
+                                管理员管理权限
+                            </div>
+                        </div>
+                    </template>
+                    <!-- @vue-skip -->
+                    <el-segmented v-model="innerRoleC" :options="innerRolesOptions" />
+                </el-descriptions-item>
+            </el-descriptions>
+        </el-form>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="changeVisible = false" style="font-weight: bold">取消</el-button>
+                <el-button type="primary" @click="formChange" style="font-weight: bold">
+                    修改
+                </el-button>
+            </div>
         </template>
-    </el-popconfirm>
+    </el-dialog>
 
 </template>
 
@@ -109,7 +195,7 @@
 import { ElMessage } from 'element-plus'
 import { Search, Upload } from '@element-plus/icons-vue'
 import { adminGetUserByParamsAndPage } from '@/api/user';
-import { onBeforeMount, ref, watch } from 'vue';
+import { onBeforeMount, reactive, ref, watch } from 'vue';
 
 
 // 显示界面时间规范化
@@ -151,6 +237,54 @@ const formSelectChange = async () => {
     tableData.value = (await userList()).data.data.rows
     dialogFormVisible.value = false
     ElMessage.success("查询成功")
+}
+
+// 修改权限弹出框
+const changeVisible = ref(false)
+// 当前行
+let rowNow = ref({})
+// 绑定值
+let innerRoleA = ref()
+let innerRoleB = ref()
+let innerRoleC = ref()
+// 修改权限按钮操作逻辑
+const changeButton = (row: any) => { 
+    rowNow.value = row.row
+    // @ts-ignore
+    innerRoleA.value = rowNow.value.userRoleA ? '有权限' : "无权限"
+    // @ts-ignore
+    innerRoleB.value = rowNow.value.userRoleB ? '有权限' : "无权限"
+    // @ts-ignore
+    innerRoleC.value = rowNow.value.userRoleC ? '有权限' : "无权限"
+    changeVisible.value = true
+}
+// 修改权限复选框
+const innerRolesOptions = ['有权限', '无权限']
+// 修改权限确定键
+import { updateRoleByUserAndId } from '@/api/user';
+import { useTokenStore } from '@/stores/token';
+const tokenStore = useTokenStore()
+const formChange = async () => {
+    let params = reactive({
+        myUserId: tokenStore.userId,
+        user: reactive({
+            // @ts-ignore
+            userId: rowNow.value.userId,
+            userRoleA: innerRoleA.value == '有权限' ? 1 : 0,
+            userRoleB: innerRoleB.value == '有权限' ? 1 : 0,
+            userRoleC: innerRoleC.value == '有权限' ? 1 : 0,
+            // @ts-ignore
+            userSuperAdmin: rowNow.value.userSuperAdmin
+        })
+    })
+    let res = updateRoleByUserAndId(params)
+    if ((await res).data.code === 1) {
+        changeVisible.value = false
+        handleCurrentChange()
+        ElMessage.success("权限修改成功")
+    } else {
+        ElMessage.error("你无权进行该修改")
+    }
 }
 
 
@@ -236,6 +370,10 @@ let tableData = ref([])
 </script>
 
 <style scoped>
+.cell-item {
+    display: flex;
+    align-items: center;
+}
 .title {
     margin-left: 10px;
     /* 左边距 */

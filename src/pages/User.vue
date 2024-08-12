@@ -445,8 +445,9 @@ const deleteButton = async (row: any) => {
 
 // 删除二次确认框相关的确认信息
 const deleteInfo = async () => {
+	const tokenStore = useTokenStore()
 	// @ts-ignore
-	let res = deleteUserById(rowNow.value.userId)
+	let res = deleteUserById(tokenStore.userId, rowNow.value.userId)
 	if ((await res).data.code === 1) {
 		deleteSuccess()
 	}
@@ -501,6 +502,7 @@ onBeforeMount(async() => {
 }) 
 
 import { getUserByParamsAndPage } from '@/api/user';
+import { useTokenStore } from '@/stores/token';
 
 const userList = async () => {
 	console.log("hello")

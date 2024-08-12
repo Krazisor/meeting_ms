@@ -24,12 +24,24 @@
 			<el-table-column fixed="right" label="操作" min-width="120">
 
 				<template #default="row">
-					<el-button type="primary" link plain @click="regretRentalButton(row)" style="font-weight: bold">
-						撤销
-					</el-button>
-					<el-button type="danger" link plain @click="deleteRentalButton(row)" style="font-weight: bold">
-						删除
-					</el-button>
+					<el-popconfirm width="220" confirm-button-text="撤销" cancel-button-text="算了" icon-color="#626AEF"
+						title="你确定要撤销这个会议吗?" @confirm="regretInfo" @cancel="cleanParams">
+						<template #reference>
+							<el-button type="primary" link plain @click="regretRentalButton(row)"
+								style="font-weight: bold">
+								撤销
+							</el-button>
+						</template>
+					</el-popconfirm>
+					<el-popconfirm width="220" confirm-button-text="删除" cancel-button-text="算了" icon-color="#626AEF"
+						title="你确定要删除这个会议吗?" @confirm="deleteInfo" @cancel="cleanParams">
+						<template #reference>
+							<el-button type="danger" link plain @click="deleteRentalButton(row)"
+								style="font-weight: bold">
+								删除
+							</el-button>
+						</template>
+					</el-popconfirm>
 				</template>
 
 			</el-table-column>
@@ -125,35 +137,6 @@
 		</template>
 	</el-dialog>
 
-	<!-- 撤销确认框 -->
-	<el-dialog v-model="centerDialogVisible" title="Warning" width="500" align-center>
-		<span>你确定要撤销 房间号:{{ rowNow.meetingroomId }} 此时间段的会议信息吗?</span>
-		<template #footer>
-			<div class="dialog-footer">
-				<el-button @click="centerDialogVisible = false" style="font-weight: bold">
-					取消
-				</el-button>
-				<el-button type="primary" @click="regretInfo()" style="font-weight: bold">
-					确定
-				</el-button>
-			</div>
-		</template>
-	</el-dialog>
-
-	<!-- 删除确认框 -->
-	<el-dialog v-model="deleteVisible" title="Warning" width="500" align-center>
-		<span>你确定要删除 房间号:{{ rowNow.meetingroomId }} 此时间段的会议信息吗? 删除后不可恢复！</span>
-		<template #footer>
-			<div class="dialog-footer">
-				<el-button @click="deleteVisible = false" style="font-weight: bold">
-					取消
-				</el-button>
-				<el-button type="primary" @click="deleteInfo()" style="font-weight: bold">
-					确定
-				</el-button>
-			</div>
-		</template>
-	</el-dialog>
 </template>
 
 
@@ -365,11 +348,8 @@ let rowNow = ref({
 	approveId: ref(),
 	rentalDescribe: ref<string>(''),
 })
-// 撤销确认框
-const centerDialogVisible = ref(false)
 // 撤销按钮按键逻辑
 const regretRentalButton = (row: any) => {
-	centerDialogVisible.value = true
 	rowNow.value = row.row
 }
 // 撤销按钮确定逻辑
@@ -377,18 +357,15 @@ const regretInfo = async () => {
 	let res = regretRentalService(rowNow.value)
 	if ((await res).data.code === 1) {
 		ElMessage.success("撤销成功")
-		centerDialogVisible.value = false
 		handleCurrentChange()
 	} else {
 		ElMessage.error("异常错误,请联系管理员")
 	}
 }
 
-// 删除按钮弹出框
-const deleteVisible = ref(false)
+
 // 删除按钮操作逻辑
 const deleteRentalButton = (row: any) => {
-	deleteVisible.value = true
 	rowNow.value = row.row
 }
 // 删除弹出框中的确认逻辑
@@ -396,7 +373,6 @@ const deleteInfo = async () => {
 	let res = deleteRentalService(rowNow.value)
 	if ((await res).data.code === 1) {
 		ElMessage.success("删除成功")
-		deleteVisible.value = false
 		handleCurrentChange()
 	} else {
 		ElMessage.error("异常错误,请联系管理员")
