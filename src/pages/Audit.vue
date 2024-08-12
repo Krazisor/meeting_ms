@@ -396,30 +396,11 @@ onBeforeMount(async () => {
 }
 
 .gradient-button:hover {
-    background: linear-gradient(270deg, #cad441, #4caf50);
+    background: linear-gradient(270deg, #4ec952, #c2cd2c);
     /* 悬停时的渐变效果 */
-    transform: scale(1.05);
-    /* 悬停时放大效果 */
+    transform: translateY(-2px);
+    /* 悬停时向上移动 */
 }
-
-.blue-button {
-    background: linear-gradient(270deg, #00bfff, #2c5d9d);
-    /* 天蓝色渐变 */
-    border: none;
-    /* 去掉默认边框 */
-    color: white;
-    /* 文字颜色 */
-    transition: background 0.3s, transform 0.3s;
-    /* 动画过渡效果 */
-}
-
-.blue-button:hover {
-    background: linear-gradient(270deg, #2c5d9d, #00bfff);
-    /* 悬停时的渐变效果 */
-    transform: scale(1.05);
-    /* 悬停时放大效果 */
-}
-
 .title {
     margin-left: 10px;
     /* 左边距 */

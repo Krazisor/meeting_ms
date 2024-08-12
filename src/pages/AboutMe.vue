@@ -197,11 +197,11 @@
     </div>
     <br>
     <div style="text-align: right;margin-right: 3%;margin-bottom: 10px;margin-top: 10px;">
-        <el-button type="danger" @click="unSubmit">退出登录</el-button>
+        <el-button type="danger" @click="unSubmit" class="danger">退出登录</el-button>
         <el-popconfirm width="220" confirm-button-text="确定" cancel-button-text="算了" icon-color="#626AEF"
             title="你确定要进行信息修改吗?" @confirm="changeInfo">
             <template #reference>
-                <el-button type="primary" @click="">提交个人信息的修改</el-button>
+                <el-button type="primary" @click="" class="primary">提交个人信息的修改</el-button>
             </template>
         </el-popconfirm>
     </div>
@@ -362,6 +362,69 @@ tagType.value.tagTypeD = computed(() => {
 </script>
 
 <style scoped>
+/* 提交按钮样式 */
+.el-button.primary {
+    background-color: #409EFF;
+    /* 主按钮背景色 */
+    color: white;
+    /* 字体颜色 */
+    border: none;
+    /* 去掉边框 */
+    border-radius: 4px;
+    /* 圆角 */
+    padding: 10px 20px;
+    /* 内边距 */
+    font-size: 16px;
+    /* 字体大小 */
+    transition: background-color 0.3s, transform 0.2s;
+    /* 动画效果 */
+}
+
+.el-button.primary:hover {
+    background-color: #66b1ff;
+    /* 悬停时的背景色 */
+    transform: translateY(-2px);
+    /* 悬停时向上移动 */
+}
+
+.el-button.primary:active {
+    background-color: #007bff;
+    /* 按下时的背景色 */
+    transform: translateY(0);
+    /* 恢复位置 */
+}
+
+/* 退出按钮样式 */
+.el-button.danger {
+    background-color: #f56c6c;
+    /* 危险按钮背景色 */
+    color: white;
+    /* 字体颜色 */
+    border: none;
+    /* 去掉边框 */
+    border-radius: 4px;
+    /* 圆角 */
+    padding: 10px 20px;
+    /* 内边距 */
+    font-size: 16px;
+    /* 字体大小 */
+    transition: background-color 0.3s, transform 0.2s;
+    /* 动画效果 */
+}
+
+.el-button.danger:hover {
+    background-color: #f78989;
+    /* 悬停时的背景色 */
+    transform: translateY(-2px);
+    /* 悬停时向上移动 */
+}
+
+.el-button.danger:active {
+    background-color: #d9534f;
+    /* 按下时的背景色 */
+    transform: translateY(0);
+    /* 恢复位置 */
+}
 .cell-item {
     display: flex;
     align-items: center;

@@ -75,19 +75,24 @@
                                         <setting />
                                     </el-icon>管理员管理
                                 </template>
-                                    <el-menu-item-group>
-                                        <template #title>有关管理员与管理权限</template>
-                                        <RouterLink to="/adminManage" :style="{ textDecoration: 'none' }">
-                                            <el-menu-item index="3-1">管理员晋升与调配</el-menu-item>
-                                        </RouterLink>
-                                    </el-menu-item-group>
+                                <el-menu-item-group>
+                                    <template #title>有关管理员与管理权限</template>
+                                    <RouterLink to="/adminManage" :style="{ textDecoration: 'none' }">
+                                        <el-menu-item index="3-1">管理员晋升与调配</el-menu-item>
+                                    </RouterLink>
+                                </el-menu-item-group>
                             </el-sub-menu>
                         </el-menu>
                     </el-scrollbar>
                 </el-aside>
 
                 <el-main overflow-y: scroll class="content">
-                    <RouterView></RouterView>
+                    <router-view v-slot="{ Component }">
+                        <transition name="scale">
+                            <component :is="Component" />
+                        </transition>
+                    </router-view>
+
                 </el-main>
             </el-container>
         </el-container>
@@ -96,8 +101,6 @@
 
 <script setup lang="ts" name="">
 import { selectUserById } from '@/api/user';
-import Meeting from '@/pages/Meeting.vue';
-import AdminManage from '@/pages/AdminManage.vue';
 import { useTokenStore } from '@/stores/token';
 import { onMounted, ref } from 'vue';
 
@@ -136,7 +139,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-
 /* 顶栏样式 */
 .header {
     display: flex;

@@ -5,7 +5,7 @@
         </div>
         <!-- 筛选框 -->
         <div class="mb-4" style="text-align: right;margin-right: 3%;margin-bottom: 10px;margin-top: 10px;">
-            <el-button type="primary" :icon="Search" @click="selectInfo" class="blue-button"
+            <el-button type="primary" :icon="Search" @click="selectInfo" class="gradient-button"
                 style="font-weight: bold">查询用户</el-button>
         </div>
 
@@ -397,6 +397,24 @@ let tableData = ref([])
 .title:hover {
     color: #1a3e6d;
     /* 悬停时的字体颜色 */
+}
+
+.gradient-button {
+    background: linear-gradient(270deg, #169bd4, #db74e0);
+    /* 绿色渐变 */
+    border: none;
+    /* 去掉默认边框 */
+    color: white;
+    /* 文字颜色 */
+    transition: background 0.3s, transform 0.3s;
+    /* 动画过渡效果 */
+}
+
+.gradient-button:hover {
+    background: linear-gradient(270deg, #19b4f6, #ed55f8);
+    /* 悬停时的渐变效果 */
+    transform: translateY(-2px);
+    /* 悬停时向上移动 */
 }
 
 </style>
